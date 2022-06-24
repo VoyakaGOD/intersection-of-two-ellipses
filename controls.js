@@ -1,5 +1,10 @@
+const cnv = document.getElementById("cnv");
+const ctx = cnv.getContext("2d");
 const CONTROLS = []
-var controlSize = 15;
+const controlSize = 10;
+const selectedControlSize = 7;
+const controlColor = "#638700";
+const selectedControlColor = "#9BAA00";
 var selectedControlId = -1;
 var onControlChanged = (id, oldPosition, newPosition) => {};
 
@@ -21,6 +26,25 @@ class Controls
         CONTROLS.splice(controlId, 1);
     }
 
+    static Draw()
+    {
+        for(let i = 0; i < CONTROLS.length; i++)
+        {
+            ctx.beginPath();
+            if (i == selectedControlId)
+            {
+                ctx.fillStyle = selectedControlColor;
+                ctx.arc(CONTROLS[i].x, CONTROLS[i].y, selectedControlSize, 0, 2 * Math.PI);
+            }
+            else
+            {
+                ctx.fillStyle = controlColor;
+                ctx.arc(CONTROLS[i].x, CONTROLS[i].y, controlSize, 0, 2 * Math.PI);
+            }
+            ctx.fill();
+        }
+    }
+
     static OnMouseDown(mousePosition)
     {
         for(let i = 0; i < CONTROLS.length; i++)
@@ -29,6 +53,7 @@ class Controls
             if (delta.sqrLen < controlSize*controlSize)
             {
                 selectedControlId = i;
+                onControlChanged(-1, Vector2.zero, Vector2.zero);
                 break;
             }
         }
@@ -47,6 +72,7 @@ class Controls
     static OnMouseUp(mousePosition)
     {
         selectedControlId = -1;
+        onControlChanged(-1, Vector2.zero, Vector2.zero);
     }
 }
 

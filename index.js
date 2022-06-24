@@ -1,5 +1,5 @@
-const cnv = document.getElementById("cnv");
-const ctx = cnv.getContext("2d");
+const ellipseContourColor = "#0E1B0B";
+const ellipseContourWidth = 3;
 
 function ResizeCanvas()
 {
@@ -27,19 +27,13 @@ function Redraw()
 {
     ctx.clearRect(0, 0, cnv.width, cnv.height);
 
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = ellipseContourColor;
+    ctx.lineWidth = ellipseContourWidth;
     ctx.beginPath();
     ctx.ellipse(CONTROLS[first_center].x, CONTROLS[first_center].y, size_a, size_b, CONTROLS[first_a1].Sub(CONTROLS[first_center]).angle, 0, 2 * Math.PI);
     ctx.stroke();
 
-    ctx.fillStyle = "green"
-    for(let i = 0; i < CONTROLS.length; i++)
-    {
-        ctx.beginPath();
-        ctx.arc(CONTROLS[i].x, CONTROLS[i].y, controlSize, 0, 2 * Math.PI);
-        ctx.fill();
-    }
+    Controls.Draw();
 }
 
 Redraw();
