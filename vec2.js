@@ -36,6 +36,11 @@ class Vector2
         return Math.sqrt(this.Dot(this));
     }
 
+    get normalized()
+    {
+        return this.Mul(1 / this.len);
+    }
+
     get angle()
     {
         return Math.atan2(this.y, this.x);
