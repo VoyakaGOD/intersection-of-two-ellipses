@@ -16,12 +16,22 @@ class Ellipse
         this.sizeB = sizeB;
     }
 
+    get position()
+    {
+        return CONTROLS[this.center];
+    }
+
+    get angle()
+    {
+        return CONTROLS[this.a1].Sub(CONTROLS[this.center]).angle;
+    }
+
     Draw()
     {
         ctx.strokeStyle = ellipseContourColor;
         ctx.lineWidth = ellipseContourWidth;
         ctx.beginPath();
-        ctx.ellipse(CONTROLS[this.center].x, CONTROLS[this.center].y, this.sizeA, this.sizeB, CONTROLS[this.a1].Sub(CONTROLS[this.center]).angle, 0, 2 * Math.PI);
+        ctx.ellipse(CONTROLS[this.center].x, CONTROLS[this.center].y, this.sizeA, this.sizeB, this.angle, 0, 2 * Math.PI);
         ctx.stroke();
     }
 
