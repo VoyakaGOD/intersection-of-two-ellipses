@@ -96,5 +96,3 @@ function SolveQuarticEquation(a, b, c, d)
     
     return result;
 }
-
-console.log(SolveQuarticEquation(0, 0, -1, 0));
