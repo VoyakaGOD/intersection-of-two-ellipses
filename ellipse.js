@@ -1,5 +1,13 @@
 const ellipseContourColor = "#0E1B0B";
 const ellipseContourWidth = 3;
+const minEllipseSize = 15;
+
+class EllipseHandlingType
+{
+    static get All() { return 0; }
+    static get SizeOnly() { return 1; }
+    static get RotationOnly() { return 2; }
+}
 
 class Ellipse
 {
@@ -35,8 +43,38 @@ class Ellipse
         ctx.stroke();
     }
 
-    HandleChangedControl(id, oldPosition, newPosition)
+    HandleChangedControl(id, oldPosition, newPosition, handlingType)
     {
+        if(id != this.center && id != this.a1 && id != this.a2 && id != this.b1 && id != this.b2)
+            return;
+        
+        if(id != this.center)
+        {
+            let dir = CONTROLS[id].Sub(CONTROLS[this.center]);
+            if(handlingType == EllipseHandlingType.RotationOnly)
+            {
+                let ndir = dir.normalized;
+                if(id == this.a1 || id == this.a2)
+                    CONTROLS[id] = CONTROLS[this.center].Add(ndir.Mul(this.sizeA));
+                if(id == this.b1 || id == this.b2)
+                    CONTROLS[id] = CONTROLS[this.center].Add(ndir.Mul(this.sizeB));
+            }
+            else if (handlingType == EllipseHandlingType.SizeOnly)
+            {
+                let oldDir = oldPosition.Sub(CONTROLS[this.center]).normalized;
+                CONTROLS[id] = CONTROLS[this.center].Add(oldDir.Mul(oldDir.Dot(dir)));
+            }
+
+            dir = CONTROLS[id].Sub(CONTROLS[this.center]);
+            if(dir.sqrLen < minEllipseSize*minEllipseSize)
+            {
+                if (dir.sqrLen == 0)
+                    CONTROLS[id] = oldPosition;
+                else
+                    CONTROLS[id] = CONTROLS[this.center].Add(dir.normalized.Mul(minEllipseSize));
+            }
+        }
+
         switch(id)
         {
             case this.center:

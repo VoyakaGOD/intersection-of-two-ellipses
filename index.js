@@ -12,6 +12,25 @@ window.addEventListener('resize', e =>
     Redraw();
 });
 
+var sizeMode = false;
+var rotationMode = false;
+
+document.addEventListener('keydown', e => 
+{
+    if (e.code == 'KeyQ')
+        sizeMode = true;
+    else if (e.code == 'KeyW')
+        rotationMode = true;
+});
+
+document.addEventListener('keyup', e => 
+{
+    if (e.code == 'KeyQ')
+        sizeMode = false;
+    else if (e.code == 'KeyW')
+        rotationMode = false;
+});
+
 const intersectionPointColor = "#DF0113";
 const intersectionPointSize = 5;
 
@@ -39,8 +58,9 @@ Redraw();
 
 Controls.controlChangedHandler = (id, oldPosition, newPosition) => 
 {
-    firstEllipse.HandleChangedControl(id, oldPosition, newPosition);
-    secondEllipse.HandleChangedControl(id, oldPosition, newPosition);
+    let handlingType = sizeMode? (rotationMode? EllipseHandlingType.All : EllipseHandlingType.SizeOnly) : (rotationMode? EllipseHandlingType.RotationOnly : EllipseHandlingType.All);
+    firstEllipse.HandleChangedControl(id, oldPosition, newPosition, handlingType);
+    secondEllipse.HandleChangedControl(id, oldPosition, newPosition, handlingType);
     intersectionPoints = GetIntersectionPoints(firstEllipse, secondEllipse);
     Redraw();
 };
