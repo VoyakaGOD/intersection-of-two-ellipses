@@ -1,6 +1,6 @@
 function IsCloseToZero(num)
 {
-    return Math.abs(num) < Number.EPSILON;
+    return Math.abs(num) < 1e-7;
 }
 
 function Re(num)
@@ -23,6 +23,20 @@ function Qbrt(complex)
     let angle = Math.atan2(complex.y, complex.x) * 0.33333333333;
     let l = Math.pow(complex.x*complex.x + complex.y*complex.y, 0.16666666666);
     return new Complex(l*Math.cos(angle), l*Math.sin(angle));
+}
+
+//ax^2 + bx + c = 0
+function SolveQuadricEquation(a, b, c)
+{
+    b = b / a;
+    c = c / a;
+    let D = b*b-4*c;
+    if (IsCloseToZero(D))
+        return [-0.5*b];
+    if (D < 0)
+        return [];
+    let sqrtD = Math.sqrt(D);
+    return [0.5*(-b-sqrtD), 0.5*(-b+sqrtD)];
 }
 
 //x^2 + bx + c = 0
@@ -78,8 +92,8 @@ function SolveQuarticEquation(a, b, c, d)
         let z = t.sqrt;
         let u = Re(p).Add(t).Mul(0.5);
         let v = z.inverse.Mul(q*0.5);
-        let x12 = SolveComplexQuadricEquation(z, u.Sub(z.MulComplex(v)));
-        let x34 = SolveComplexQuadricEquation(z.Mul(-1), u.Add(z.MulComplex(v)));
+        let x12 = SolveComplexQuadricEquation(z, u.Sub(v));
+        let x34 = SolveComplexQuadricEquation(z.Mul(-1), u.Add(v));
         
         if (IsCloseToZero(x12[0].y))
             result.push(x12[0].x);

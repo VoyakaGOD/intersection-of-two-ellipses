@@ -14,45 +14,47 @@ function GetIntersectionPoints(firstEllipse, secondEllipse)
     let C = 2*b*p0.y*id2;
     let D = p0.x*p0.x*ic2 + p0.y*p0.y*id2 + b*b*id2 - 1;
 
-    let points = [];
+    let roots = [];
 
     if (A == 0)
     {
-        if(C == 0)
+        roots = SolveQuadricEquation(B*B + C*C, -2*B*D, D*D - C*C);
+    }
+    else
+    {
+        let F = A*A;
+        let G = -2*A*B;
+        let H = B*B + C*C + 2*A*D;
+        let J = -2*B*D;
+        let K = D*D - C*C;
+
+        let iF = 1/F;
+        roots = SolveQuarticEquation(G*iF, H*iF, J*iF, K*iF);
+    }
+
+    let points = [];
+
+    if(C == 0)
+    {
+        for(let i = 0; i < roots.length; i++)
         {
-            let _c = D/B;
-            let a_c = Math.acos(_c);
-            let _s = Math.sin(a_c);
-            points.push(new Vector2(a * _c, b * _s));
-            if(_s != 0)
-                points.push(new Vector2(a * _c, -b * _s));
+            let s = Math.sqrt(1 - roots[i]*roots[i]);
+            points.push(new Vector2(a * roots[i], b * s));
+            if(s != 0)
+                points.push(new Vector2(a * roots[i], -b * s));
         }
-        else
+    }
+    else
+    {
+        for(let i = 0; i < roots.length; i++)
         {
-            let roots = Quadric(B*B + C*C, -2*B*D, D*D - C*C);
-            for(let i = 0; i < roots.length; i++)
-            {
-                let s = (D-B*roots[i]) / C;
-                points.push(new Vector2(a*roots[i], b*s));
-            }
+            let s = (D - B*roots[i] + A*roots[i]*roots[i]) / C;
+            points.push(new Vector2(a*roots[i], b*s));
         }
     }
 
     for(let i = 0; i < points.length; i++)
         points[i] = points[i].Add(firstEllipse.position);
+    
     return points;
-}
-
-//ax^2 + bx + c = 0
-function Quadric(a, b, c)
-{
-    b = b / a;
-    c = c / a;
-    let D = b*b-4*c;
-    if (IsCloseToZero(D))
-        return [-0.5*b];
-    if (D < 0)
-        return [];
-    let sqrtD = Math.sqrt(D);
-    return [0.5*(-b-sqrtD), 0.5*(-b+sqrtD)];
 }
