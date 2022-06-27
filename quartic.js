@@ -26,7 +26,7 @@ function Qbrt(complex)
 }
 
 //ax^2 + bx + c = 0
-function SolveQuadricEquation(a, b, c)
+function SolveQuadraticEquation(a, b, c)
 {
     b = b / a;
     c = c / a;
@@ -40,7 +40,7 @@ function SolveQuadricEquation(a, b, c)
 }
 
 //x^2 + bx + c = 0
-function SolveComplexQuadricEquation(b, c)
+function SolveComplexQuadraticEquation(b, c)
 {
     let sqrtD = Sqrt(b.MulComplex(b).Sub(c.Mul(4)));
     return [b.Add(sqrtD).Mul(-0.5), b.Sub(sqrtD).Mul(-0.5)];
@@ -100,8 +100,8 @@ function SolveQuarticEquation(a, b, c, d)
         let z = t.sqrt;
         let u = Re(p).Add(t).Mul(0.5);
         let v = z.inverse.Mul(q*0.5);
-        let x12 = SolveComplexQuadricEquation(z, u.Sub(v));
-        let x34 = SolveComplexQuadricEquation(z.Mul(-1), u.Add(v));
+        let x12 = SolveComplexQuadraticEquation(z, u.Sub(v));
+        let x34 = SolveComplexQuadraticEquation(z.Mul(-1), u.Add(v));
         
         if (IsCloseToZero(x12[0].y))
             result.push(x12[0].x);

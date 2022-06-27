@@ -26,6 +26,13 @@ class Vector2
         return this.x * other.x + this.y * other.y;
     }
 
+    Rotate(angle)
+    {
+        let cos = Math.cos(angle);
+        let sin = Math.sin(angle);
+        return new Vector2(this.x*cos - this.y*sin, this.x*sin + this.y*cos);
+    }
+
     get sqrLen()
     {
         return this.Dot(this);
