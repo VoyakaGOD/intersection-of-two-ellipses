@@ -38,6 +38,8 @@ function GetIntersectionPoints(firstEllipse, secondEllipse)
     {
         for(let i = 0; i < roots.length; i++)
         {
+            if(Math.abs(roots[i]) > 1)
+                continue;
             let s = Math.sqrt(1 - roots[i]*roots[i]);
             points.push(new Vector2(a * roots[i], b * s));
             if(s != 0)
@@ -48,6 +50,8 @@ function GetIntersectionPoints(firstEllipse, secondEllipse)
     {
         for(let i = 0; i < roots.length; i++)
         {
+            if(Math.abs(roots[i]) > 1)
+                continue;
             let s = (D - B*roots[i] + A*roots[i]*roots[i]) / C;
             points.push(new Vector2(a*roots[i], b*s));
         }

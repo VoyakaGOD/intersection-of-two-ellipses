@@ -71,7 +71,15 @@ function SolveQuarticEquation(a, b, c, d)
     if(IsCloseToZero(q))
     {
         let D = p*p - 4*r;
-        if (D >= 0)
+        if(Math.abs(D) < 1e-5)
+        {
+            let m = -0.5*p;
+            if (m >= 0)
+                result.push(Math.sqrt(m));
+            if (m > 0)
+                result.push(-Math.sqrt(m));
+        }
+        else if (D > 0)
         {
             let sqrtD = Math.sqrt(D);
             let m1 = (-p - sqrtD)*0.5;
@@ -80,9 +88,9 @@ function SolveQuarticEquation(a, b, c, d)
                 result.push(Math.sqrt(m1));
             if (m1 > 0)
                 result.push(-Math.sqrt(m1));
-            if (m2 != m1 && m2 >= 0)
+            if (m2 >= 0)
                 result.push(Math.sqrt(m2));
-            if (m2 != m1 && m2 > 0)
+            if (m2 > 0)
                 result.push(-Math.sqrt(m2));
         }
     }

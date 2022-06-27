@@ -34,8 +34,8 @@ document.addEventListener('keyup', e =>
 const intersectionPointColor = "#DF0113";
 const intersectionPointSize = 5;
 
-var firstEllipse = new Ellipse(new Vector2(500, 400), new Vector2(1, 0), 200, 100);
-var secondEllipse = new Ellipse(new Vector2(600, 600), new Vector2(1, 0), 200, 100);
+var firstEllipse = new Ellipse(new Vector2(800, 600), new Vector2(1, 0), 200, 100);
+var secondEllipse = new Ellipse(new Vector2(500, 600), new Vector2(1, 0), 200, 100);
 var intersectionPoints = GetIntersectionPoints(firstEllipse, secondEllipse);
 
 function Redraw()
