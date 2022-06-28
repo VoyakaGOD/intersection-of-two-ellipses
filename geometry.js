@@ -57,7 +57,16 @@ function GetIntersectionPoints(firstEllipse, secondEllipse)
         else
         {
             let y = -(G*x*x + H*x + K) / (I*x + J);
-            points.push(new Vector2(x, y));
+            if (Math.abs(y) < 1e-2)
+            {
+                y = Math.sqrt(1 - x*x);
+                points.push(new Vector2(x, y));
+                points.push(new Vector2(x, -y));
+            }
+            else
+            {
+                points.push(new Vector2(x, y));
+            }
         }
     }
 
